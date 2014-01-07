@@ -34,7 +34,7 @@ if(!strcasecmp(basename($_SERVER['SCRIPT_NAME']),basename(__FILE__)) || !defined
     die('kwaheri rafiki!');
 
 #Install flag
-define('OSTINSTALLED',FALSE);
+define('OSTINSTALLED',TRUE);
 if(OSTINSTALLED!=TRUE){
     if(!file_exists(ROOT_DIR.'setup/install.php')) die('Error: Contact system admin.'); //Something is really wrong!
     //Invoke the installer.
@@ -43,17 +43,17 @@ if(OSTINSTALLED!=TRUE){
 }
 
 # Encrypt/Decrypt secret key - randomly generated during installation.
-define('SECRET_SALT','%CONFIG-SIRI');
+define('SECRET_SALT','UET3LFAEr4UEV1RZZUDhmd5suGL5KDHa');
 
 #Default admin email. Used only on db connection issues and related alerts.
-define('ADMIN_EMAIL','%ADMIN-EMAIL');
+define('ADMIN_EMAIL','emodels@gmail.com');
 
 #Mysql Login info
 define('DBTYPE','mysql');
-define('DBHOST','%CONFIG-DBHOST');
-define('DBNAME','%CONFIG-DBNAME');
-define('DBUSER','%CONFIG-DBUSER');
-define('DBPASS','%CONFIG-DBPASS');
+define('DBHOST','localhost');
+define('DBNAME','osticket');
+define('DBUSER','osticket_user');
+define('DBPASS','emt123');
 
 # SSL Options
 # ---------------------------------------------------
@@ -76,6 +76,6 @@ define('DBPASS','%CONFIG-DBPASS');
 # define('DBSSLKEY','/path/to/client.key');
 
 #Table prefix
-define('TABLE_PREFIX','%CONFIG-PREFIX');
+define('TABLE_PREFIX','ost_');
 
 ?>

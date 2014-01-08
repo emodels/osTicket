@@ -1,6 +1,6 @@
 <?php 
 $ROOT_DIR = str_replace('/mods/scp', '',str_replace('\\', '/', realpath(dirname(__FILE__)))).'/';
-require_once($ROOT_DIR.'main.inc.php'); 
+require_once($ROOT_DIR.'main.inc.php');
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
@@ -119,17 +119,17 @@ if($_GET['limit'])
 
 //---------( MySQL Query to retrive data rows )-------------------------
 $query = 'SELECT ticket.ticket_id,lock_id,ticketID,ticket.dept_id,ticket.staff_id,ticket.team_id  ,user.name ,email.address as email, dept_name  ,ticket.status,ticket.source,isoverdue,isanswered,ticket.created  ,IF(ticket.duedate IS NULL,IF(sla.id IS NULL, NULL, DATE_ADD(ticket.created, INTERVAL sla.grace_period HOUR)), ticket.duedate) as duedate  ,CAST(GREATEST(IFNULL(ticket.lastmessage, 0), IFNULL(ticket.reopened, 0), ticket.created) as datetime) as effective_date  ,CONCAT_WS(" ", staff.firstname, staff.lastname) as staff, team.name as team  ,IF(staff.staff_id IS NULL,team.name,CONCAT_WS(" ", staff.lastname, staff.firstname)) as assigned  ,IF(ptopic.topic_pid IS NULL, topic.topic, CONCAT_WS(" / ", ptopic.topic, topic.topic)) as helptopic  ,cdata.priority_id, cdata.subject '
-        .'FROM ost_ticket ticket ' 
-        .'LEFT JOIN ost_user user ON user.id = ticket.user_id '
-        .'LEFT JOIN ost_user_email email ON user.id = email.user_id '
-        .'LEFT JOIN ost_department dept ON ticket.dept_id=dept.dept_id '
-        .'LEFT JOIN ost_ticket_lock tlock ON (ticket.ticket_id=tlock.ticket_id AND tlock.expire>NOW()) '
-        .'LEFT JOIN ost_staff staff ON (ticket.staff_id=staff.staff_id) '
-        .'LEFT JOIN ost_team team ON (ticket.team_id=team.team_id) '
-        .'LEFT JOIN ost_sla sla ON (ticket.sla_id=sla.id AND sla.isactive=1) '
-        .'LEFT JOIN ost_help_topic topic ON (ticket.topic_id=topic.topic_id) ' 
-        .'LEFT JOIN ost_help_topic ptopic ON (ptopic.topic_id=topic.topic_pid) '  
-        .'LEFT JOIN ost_ticket__cdata cdata ON (cdata.ticket_id = ticket.ticket_id) '
+        .'FROM '.TABLE_PREFIX.'ticket ticket ' 
+        .'LEFT JOIN '.TABLE_PREFIX.'user user ON user.id = ticket.user_id '
+        .'LEFT JOIN '.TABLE_PREFIX.'user_email email ON user.id = email.user_id '
+        .'LEFT JOIN '.TABLE_PREFIX.'department dept ON ticket.dept_id=dept.dept_id '
+        .'LEFT JOIN '.TABLE_PREFIX.'ticket_lock tlock ON (ticket.ticket_id=tlock.ticket_id AND tlock.expire>NOW()) '
+        .'LEFT JOIN '.TABLE_PREFIX.'staff staff ON (ticket.staff_id=staff.staff_id) '
+        .'LEFT JOIN '.TABLE_PREFIX.'team team ON (ticket.team_id=team.team_id) '
+        .'LEFT JOIN '.TABLE_PREFIX.'sla sla ON (ticket.sla_id=sla.id AND sla.isactive=1) '
+        .'LEFT JOIN '.TABLE_PREFIX.'help_topic topic ON (ticket.topic_id=topic.topic_id) ' 
+        .'LEFT JOIN '.TABLE_PREFIX.'help_topic ptopic ON (ptopic.topic_id=topic.topic_pid) '  
+        .'LEFT JOIN '.TABLE_PREFIX.'ticket__cdata cdata ON (cdata.ticket_id = ticket.ticket_id) '
         .'WHERE staff.staff_id IS NULL AND ticket.status = "open" '
         .'ORDER BY ' . $order_by . ' ' . $order;
 

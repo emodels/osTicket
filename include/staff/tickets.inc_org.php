@@ -224,7 +224,7 @@ $qselect.=' ,IF(ticket.duedate IS NULL,IF(sla.id IS NULL, NULL, DATE_ADD(ticket.
          .' ,CONCAT_WS(" ", staff.firstname, staff.lastname) as staff, team.name as team '
          .' ,IF(staff.staff_id IS NULL,team.name,CONCAT_WS(" ", staff.lastname, staff.firstname)) as assigned '
          .' ,IF(ptopic.topic_pid IS NULL, topic.topic, CONCAT_WS(" / ", ptopic.topic, topic.topic)) as helptopic '
-         .' ,cdata.priority_id, cdata.subject, cdata.TicketStatus';
+         .' ,cdata.priority_id, cdata.subject';
 
 $qfrom.=' LEFT JOIN '.TICKET_LOCK_TABLE.' tlock ON (ticket.ticket_id=tlock.ticket_id AND tlock.expire>NOW()
                AND tlock.staff_id!='.db_input($thisstaff->getId()).') '
@@ -330,16 +330,13 @@ if ($results) {
                         title="Sort By Status <?php echo $negorder; ?>">Status</a></th>
             <?php
             } else { ?>
-                <th width="80" <?php echo $pri_sort;?>>
+                <th width="60" <?php echo $pri_sort;?>>
                     <a <?php echo $pri_sort; ?> href="tickets.php?sort=pri&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
                         title="Sort By Priority <?php echo $negorder; ?>">Priority</a></th>
             <?php
             }
-            ?>
-                <th width="120" <?php echo $ticketstatus_sort;?>>
-                    <a <?php echo $ticketstatus_sort; ?> href="tickets.php?sort=ticketstatus&order=<?php echo $negorder; ?><?php echo $qstr; ?>"
-                        title="Sort By Ticket Status <?php echo $negorder; ?>">Ticket Status</a></th>
-            <?php if($showassigned ) {
+
+            if($showassigned ) {
                 //Closed by
                 if(!strcasecmp($status,'closed')) { ?>
                     <th width="150">
@@ -426,7 +423,6 @@ if ($results) {
                 <?php
                 }
                 ?>
-                <td align="center" nowrap><?php echo $row['TicketStatus']; ?></td>
                 <td nowrap>&nbsp;<?php echo $lc; ?></td>
             </tr>
             <?php
@@ -437,7 +433,7 @@ if ($results) {
     </tbody>
     <tfoot>
      <tr>
-        <td colspan="8">
+        <td colspan="7">
             <?php if($res && $num && $thisstaff->canManageTickets()){ ?>
             Select:&nbsp;
             <a id="selectAll" href="#ckb">All</a>&nbsp;&nbsp;

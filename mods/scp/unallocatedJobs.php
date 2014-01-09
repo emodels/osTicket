@@ -9,10 +9,8 @@ require_once($ROOT_DIR.'main.inc.php');
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="pragma" content="no-cache" />
-    <?php if (isset($_REQUEST['refresh']) && is_numeric($_REQUEST['refresh'])){ ?>
-    <meta http-equiv="refresh" content="<?php echo 60 * $_REQUEST['refresh']; ?>">
-    <?php } ?>
-    <title>osTicket :: Unallocated Jobs</title>
+    <meta http-equiv="refresh" content="60">
+    <title>osTicket :: Unallocated Tickets</title>
     <!--[if IE]>
     <style type="text/css">
         .tip_shadow { display:block !important; }
@@ -61,7 +59,7 @@ require_once($ROOT_DIR.'main.inc.php');
 <body>
 <div id="container">
     <div id="header">
-        <a href="<?php echo ROOT_PATH; ?>index.php" id="logo">osTicket - Customer Support System</a>
+        <div style="text-align: center; font-size: 30px; padding-top: 20px">Unallocated Tickets</div>
     </div>
     <div id="content">
 <?php
@@ -183,7 +181,6 @@ if ($results) {
 ?>
 <form action="tickets.php" method="POST" name='tickets'>
 <?php csrf_token(); ?>
- <a class="refresh" href="<?php echo $_SERVER['REQUEST_URI']; ?>">Refresh</a>
  <input type="hidden" name="a" value="mass_process" >
  <input type="hidden" name="do" id="action" value="" >
  <input type="hidden" name="status" value="<?php echo Format::htmlchars($_REQUEST['status']); ?>" >
@@ -271,14 +268,13 @@ if ($results) {
                 ?>
             <tr id="<?php echo $row['ticket_id']; ?>">
                 <td align="center" title="<?php echo $row['email']; ?>" nowrap>
-                  <a class="Icon <?php echo strtolower($row['source']); ?>Ticket ticketPreview" title="Preview Ticket"
-                    href="<?php echo ROOT_PATH; ?>scp/tickets.php?id=<?php echo $row['ticket_id']; ?>" target="_blank"><?php echo $tid; ?></a></td>
+                  <div class="Icon <?php echo strtolower($row['source']); ?>Ticket ticketPreview"><?php echo $tid; ?></div></td>
                 <td align="center" nowrap><?php echo Format::db_datetime($row['effective_date']); ?></td>
-                <td><a <?php if($flag) { ?> class="Icon <?php echo $flag; ?>Ticket" title="<?php echo ucfirst($flag); ?> Ticket" <?php } ?>
-                    href="<?php echo ROOT_PATH; ?>scp/tickets.php?id=<?php echo $row['ticket_id']; ?>" target="_blank"><?php echo $subject; ?></a>
+                <td><div <?php if($flag) { ?> class="Icon <?php echo $flag; ?>Ticket" title="<?php echo ucfirst($flag); ?> Ticket" <?php } ?>><?php echo $subject; ?>
                      &nbsp;
                      <?php echo ($threadcount>1)?" <small>($threadcount)</small>&nbsp;":''?>
                      <?php echo $row['attachments']?"<span class='Icon file'>&nbsp;</span>":''; ?>
+                    </div>  
                 </td>
                 <td nowrap>&nbsp;<?php echo Format::truncate($row['name'],22,strpos($row['name'],'@')); ?>&nbsp;</td>
                 <?php
@@ -308,9 +304,6 @@ if ($results) {
     } ?>
     </form>
     </div>
-</div>
-<div id="footer">
-    Copyright &copy; 2006-<?php echo date('Y'); ?>&nbsp;osTicket.com. &nbsp;All Rights Reserved.
 </div>
 </body>
 </html>
